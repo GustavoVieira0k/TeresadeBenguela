@@ -11,6 +11,7 @@ public record ProjectResponseDTO(
     String description,
     String impact,
     String image,
+    String videoUrl,
     List<ProjectFeatureDTO> features,
     Map<String, String> details
 ) {}

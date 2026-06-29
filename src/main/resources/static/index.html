@@ -29,6 +29,7 @@
           <a href="voluntario.html"
             class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
           <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </nav>
         <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
           <i class="fas fa-bars text-xl"></i>
@@ -40,6 +41,7 @@
           <a href="voluntario.html"
             class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
           <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </div>
       </div>
     </div>
@@ -52,10 +54,10 @@
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-          Preservando a cultura
+          <span id="hero-title">Preservando a cultura</span>
           <span class="gradient-text"> Quilombola</span>
         </h1>
-        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+        <p id="hero-subtitle" class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
           Mais de 100 anos de história, tradições e resistência cultural em <br /> Vila Bela da Santíssima Trindade - MT
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -80,10 +82,10 @@
 
         <div class="space-y-8">
           <div>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 id="about-title" class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Conheça o <span class="gradient-text">Instituto Tereza de Benguela</span>
             </h2>
-            <p class="text-xl text-gray-600 leading-relaxed mb-8">
+            <p id="about-description" class="text-xl text-gray-600 leading-relaxed mb-8">
               Dedicamos nossa missão a preservar, valorizar e fomentar a rica cultura quilombola de Vila Bela da
               Santíssima Trindade - MT, onde mais de 100 anos de isolamento forjaram uma identidade cultural única e
               profundamente africanizada.
@@ -93,22 +95,22 @@
           <div class="space-y-6">
             <div class="flex items-start space-x-4">
               <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-landmark text-white"></i>
+                <i id="about-item1-icon" class="fas fa-landmark text-white"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">História Centenária</h3>
-                <p class="text-gray-600">Após 1835, com a mudança da capital para Cuiabá, nossa comunidade desenvolveu
+                <h3 id="about-item1-title" class="text-xl font-bold text-gray-900 mb-2">História Centenária</h3>
+                <p id="about-item1-description" class="text-gray-600">Após 1835, com a mudança da capital para Cuiabá, nossa comunidade desenvolveu
                   autonomamente tecnologias sociais únicas em educação, saúde e agricultura.</p>
               </div>
             </div>
 
             <div class="flex items-start space-x-4">
               <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-users text-white"></i>
+                <i id="about-item2-icon" class="fas fa-users text-white"></i>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Movimento Quilombola</h3>
-                <p class="text-gray-600">Articulamos e organizamos comunidades quilombolas da região, promovendo sua
+                <h3 id="about-item2-title" class="text-xl font-bold text-gray-900 mb-2">Movimento Quilombola</h3>
+                <p id="about-item2-description" class="text-gray-600">Articulamos e organizamos comunidades quilombolas da região, promovendo sua
                   integração aos movimentos estadual e nacional.</p>
               </div>
             </div>
@@ -262,6 +264,25 @@
     </div>
   </section>
 
+  <section id="news-section" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Últimas <span class="gradient-text">Notícias</span>
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Acompanhe as novidades e acontecimentos do Instituto Tereza de Benguela
+        </p>
+      </div>
+      <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      <div class="text-center mt-12">
+        <a href="noticias.html" class="news-see-all-btn inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white shadow-md transition-opacity hover:opacity-90">
+          <i class="fas fa-newspaper"></i> Ver Todas as Notícias
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section class="news-cta-section h-screen">
     <div class="cta-content cta-bg">
       <div class="w-full">
@@ -269,10 +290,10 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
             <div class="text-center lg:text-left">
-              <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 id="cta-title" class="text-3xl md:text-4xl font-bold text-white mb-6">
                 Faça Parte da Nossa História
               </h2>
-              <p class="text-lg mb-8 leading-relaxed text-cta">
+              <p id="cta-description" class="text-lg mb-8 leading-relaxed text-cta">
                 O Instituto Tereza de Benguela preserva mais de um século de tradições culturais únicas.
                 Sua contribuição fortalece nossa missão de manter viva a herança quilombola para as futuras gerações.
               </p>
@@ -280,19 +301,19 @@
               <div class="space-y-4 mb-8 text-left">
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-check-circle text-secondary"></i>
-                  <span class="text-cta">Preservação de tecnologias sociais centenárias</span>
+                  <span id="cta-bullet1" class="text-cta">Preservação de tecnologias sociais centenárias</span>
                 </div>
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-check-circle text-secondary"></i>
-                  <span class="text-cta">Fortalecimento da identidade quilombola</span>
+                  <span id="cta-bullet2" class="text-cta">Fortalecimento da identidade quilombola</span>
                 </div>
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-check-circle text-secondary"></i>
-                  <span class="text-cta">Articulação de comunidades regionais</span>
+                  <span id="cta-bullet3" class="text-cta">Articulação de comunidades regionais</span>
                 </div>
                 <div class="flex items-center space-x-3">
                   <i class="fas fa-check-circle text-secondary"></i>
-                  <span class="text-cta">Educação e valorização cultural</span>
+                  <span id="cta-bullet4" class="text-cta">Educação e valorização cultural</span>
                 </div>
               </div>
 
@@ -315,17 +336,16 @@
                   <div class="flex items-start space-x-3">
                     <i class="fas fa-map-marker-alt text-secondary mt-1"></i>
                     <div>
-                      <p class="font-semibold text-white">Vila Bela da Santíssima Trindade - MT</p>
-                      <p class="text-sm text-cta">Primeira capital de Mato Grosso</p>
-                      <p class="text-xs text-cta">520km de Cuiabá</p>
+                      <p id="location-city" class="font-semibold text-white">Vila Bela da Santíssima Trindade - MT</p>
+                      <p id="location-subtitle" class="text-sm text-cta">Primeira capital de Mato Grosso</p>
+                      <p id="location-distance" class="text-xs text-cta">520km de Cuiabá</p>
                     </div>
                   </div>
                   <div class="flex items-start space-x-3">
                     <i class="fas fa-users text-secondary mt-1"></i>
                     <div>
-                      <p class="font-semibold text-white">Comunidade Resiliente</p>
-                      <p class="text-sm text-cta">Mais de 100 anos de autonomia</p>
-                      <p class="text-xs text-cta">Tecnologias sociais próprias</p>
+                      <p id="location-community" class="font-semibold text-white">Comunidade Resiliente</p>
+                      <p id="location-community-detail" class="text-sm text-cta">Mais de 100 anos de autonomia</p>
                     </div>
                   </div>
                 </div>
@@ -339,13 +359,13 @@
                   <div class="flex items-start space-x-3">
                     <i class="fas fa-phone text-secondary mt-1"></i>
                     <div>
-                      <p class="font-semibold text-white">(65) 99247-4141</p>
+                      <p id="contact-phone" class="font-semibold text-white">(65) 99247-4141</p>
                     </div>
                   </div>
                   <div class="flex items-start space-x-3">
                     <i class="fas fa-envelope text-secondary mt-1"></i>
                     <div>
-                      <p class="font-semibold text-white">institutoterezadebenguela@gmail.com</p>
+                      <p id="contact-email" class="font-semibold text-white">institutoterezadebenguela@gmail.com</p>
                     </div>
                   </div>
                 </div>
@@ -478,7 +498,45 @@
       }, 500);
     });
 
+    async function loadSiteSettings() {
+      try {
+        const res = await fetch('/api/site-settings');
+        if (!res.ok) return;
+        const s = await res.json();
+
+        const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+        const setIcon = (id, val) => { const el = document.getElementById(id); if (el && val) { el.className = val + ' text-white'; } };
+
+        set('hero-title', s.heroTitle);
+        set('hero-subtitle', s.heroSubtitle);
+        set('about-title', s.aboutTitle);
+        set('about-description', s.aboutDescription);
+        setIcon('about-item1-icon', s.aboutItem1Icon);
+        set('about-item1-title', s.aboutItem1Title);
+        set('about-item1-description', s.aboutItem1Description);
+        setIcon('about-item2-icon', s.aboutItem2Icon);
+        set('about-item2-title', s.aboutItem2Title);
+        set('about-item2-description', s.aboutItem2Description);
+        set('cta-title', s.ctaTitle);
+        set('cta-description', s.ctaDescription);
+        set('cta-bullet1', s.ctaBullet1);
+        set('cta-bullet2', s.ctaBullet2);
+        set('cta-bullet3', s.ctaBullet3);
+        set('cta-bullet4', s.ctaBullet4);
+        set('contact-phone', s.contactPhone);
+        set('contact-email', s.contactEmail);
+        set('location-city', s.locationCity);
+        set('location-subtitle', s.locationSubtitle);
+        set('location-distance', s.locationDistance);
+        set('location-community', s.locationCommunity);
+        set('location-community-detail', s.locationCommunityDetail);
+      } catch (e) {
+        // silently keep hardcoded defaults
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+      loadSiteSettings();
       loadBoardMembers();
 
       if (window.ProjectsManager) {
@@ -494,6 +552,13 @@
       }
     });
   </script>
+
+  <!-- Modal de notícia completa -->
+  <div id="news-modal">
+    <div id="news-modal-box">
+      <div id="news-modal-body"></div>
+    </div>
+  </div>
 </body>
 
 </html>

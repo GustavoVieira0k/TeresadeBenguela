@@ -27,14 +27,25 @@ public class BoardMemberService {
     }
 
     @Transactional
+    public BoardMemberResponseDTO createBoardMember(BoardMemberRequestDTO dto) {
+        BoardMember member = new BoardMember(dto.getRole(), dto.getName());
+        return new BoardMemberResponseDTO(boardMemberRepository.save(member));
+    }
+
+    @Transactional
     public BoardMemberResponseDTO updateBoardMember(@NonNull Long id, BoardMemberRequestDTO dto) {
         BoardMember member = boardMemberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Membro da diretoria não encontrado com o ID: " + id));
-
         member.setRole(dto.getRole());
         member.setName(dto.getName());
+        return new BoardMemberResponseDTO(boardMemberRepository.save(member));
+    }
 
-        BoardMember savedMember = boardMemberRepository.save(member);
-        return new BoardMemberResponseDTO(savedMember);
+    @Transactional
+    public void deleteBoardMember(@NonNull Long id) {
+        if (!boardMemberRepository.existsById(id)) {
+            throw new RuntimeException("Membro da diretoria não encontrado com o ID: " + id);
+        }
+        boardMemberRepository.deleteById(id);
     }
 }

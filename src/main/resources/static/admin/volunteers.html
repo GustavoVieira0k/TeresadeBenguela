@@ -6,82 +6,145 @@
     <title>Gerenciar Voluntários - Admin Instituto Teresa</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
     <script src="./js/common.js" defer></script>
+    <script src="./js/icon-picker.js" defer></script>
     <script src="./js/volunteers.js" defer></script>
+    <style>
+        #msg-modal.hidden { display: none; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <nav class="bg-white shadow">
+    <nav class="bg-white shadow admin-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <span class="ml-2 font-bold text-xl text-gray-800">Admin</span>
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa" onerror="this.style.display='none'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
                     </div>
                     <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                         <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
                         <a href="board.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
                         <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
-                        <a href="volunteers.html" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="volunteers.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Sair</button>
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Sair <i class="fas fa-sign-out-alt ml-2"></i></button>
                 </div>
             </div>
         </div>
     </nav>
 
     <main class="py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6 mb-8">
-                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Gerenciar Textos de Voluntários</h2>
-                <div id="alert-message" class="hidden mb-4 rounded-md p-4 transition-all"></div>
-                <p class="text-gray-500 mb-6">Altere os textos de chamada (Heroshot) que encorajam o visitante a se inscrever.</p>
-                
-                <form id="volunteer-form" class="space-y-6">
-                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                        
-                        <div class="sm:col-span-6 md:col-span-3">
-                            <label for="title1" class="block text-sm font-medium text-gray-700">Título Linha 1</label>
-                            <input type="text" name="title1" id="v-title1" required placeholder="Transforme vidas através da" class="mt-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
-                        </div>
-                        
-                        <div class="sm:col-span-6 md:col-span-3">
-                            <label for="title2" class="block text-sm font-medium text-gray-700">Título Linha 2 (Destaque)</label>
-                            <input type="text" name="title2" id="v-title2" required placeholder="Cultura Quilombola" class="mt-1 shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
-                        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div id="alert-message" class="hidden rounded-md p-4"></div>
 
-                        <div class="sm:col-span-6">
-                            <label for="description" class="block text-sm font-medium text-gray-700">Texto Descritivo / Chamada</label>
-                            <div class="mt-1">
-                                <textarea id="v-description" name="description" rows="3" required class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"></textarea>
+            <!-- Formulário de textos -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-1">Textos da Página de Voluntários</h2>
+                <p class="text-sm text-gray-500 mb-6">Hero e cards de benefícios exibidos em voluntario.html.</p>
+
+                <form id="volunteer-form" class="space-y-6">
+                    <!-- Hero -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título Linha 1</label>
+                            <input type="text" id="v-title1" required placeholder="Transforme vidas através da" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título Linha 2 (Destaque)</label>
+                            <input type="text" id="v-title2" required placeholder="Cultura Quilombola" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Texto Descritivo</label>
+                            <textarea id="v-description" rows="3" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="pt-4 border-t border-gray-200">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">Cards "Por que ser voluntário?" (4 fixos)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Benefit 0 -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Card 1</p>
+                                <input type="text" id="benefit-icon-0" placeholder="fas fa-heart" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-title-0" placeholder="Título" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-description-0" placeholder="Descrição" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <!-- Benefit 1 -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Card 2</p>
+                                <input type="text" id="benefit-icon-1" placeholder="fas fa-users" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-title-1" placeholder="Título" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-description-1" placeholder="Descrição" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <!-- Benefit 2 -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Card 3</p>
+                                <input type="text" id="benefit-icon-2" placeholder="fas fa-graduation-cap" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-title-2" placeholder="Título" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-description-2" placeholder="Descrição" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <!-- Benefit 3 -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Card 4</p>
+                                <input type="text" id="benefit-icon-3" placeholder="fas fa-star" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-title-3" placeholder="Título" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="benefit-description-3" placeholder="Descrição" class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
                     </div>
 
-                    <div class="pt-5 border-t border-gray-200 flex justify-end gap-3">
-                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Salvar Alterações
+                    <div class="flex justify-end border-t border-gray-200 pt-4">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white btn-brand">
+                            <i class="fas fa-save mr-2"></i> Salvar Alterações
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">Lista de Voluntários</h2>
-            <div id="volunteers-list" class="space-y-4">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        </tr>
-                    </thead>
-                    <tbody id="volunteers-list"></tbody>
+
+            <!-- Lista de voluntários -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Candidaturas recebidas</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Telefone</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Faixa etária</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="volunteers-list" class="bg-white divide-y divide-gray-100"></tbody>
                     </table>
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Modal: mensagem do voluntário -->
+    <div id="msg-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 id="msg-modal-name" class="text-lg font-semibold text-gray-900"></h3>
+                <button id="msg-modal-close" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <p class="text-xs font-semibold text-gray-400 uppercase">Mensagem / Motivação</p>
+            <p id="msg-modal-body" class="text-sm text-gray-700 whitespace-pre-wrap bg-gray-50 rounded p-3 min-h-[80px]"></p>
+            <div class="flex justify-end">
+                <button id="msg-modal-ok" class="px-4 py-2 text-sm font-medium text-white rounded-md btn-brand">Fechar</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

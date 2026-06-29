@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,19 +29,36 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectResponseDTO updateProject(Long id, ProjectRequestDTO dto) {
-        if (id == null) {
-            throw new RuntimeException("ID do projeto não pode ser nulo");
-        }
+    public ProjectResponseDTO createProject(ProjectRequestDTO dto) {
+        Project project = new Project();
+        applyDto(project, dto);
+        return mapToDTO(projectRepository.save(project));
+    }
+
+    @Transactional
+    public ProjectResponseDTO updateProject(long id, ProjectRequestDTO dto) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Projeto não encontrado com o ID: " + id));
+        applyDto(project, dto);
+        return mapToDTO(projectRepository.save(Objects.requireNonNull(project)));
+    }
 
+    @Transactional
+    public void deleteProject(long id) {
+        if (!projectRepository.existsById(id)) {
+            throw new RuntimeException("Projeto não encontrado com o ID: " + id);
+        }
+        projectRepository.deleteById(id);
+    }
+
+    private void applyDto(Project project, ProjectRequestDTO dto) {
         project.setCode(dto.code());
         project.setTitle(dto.title());
         project.setSubtitle(dto.subtitle());
         project.setDescription(dto.description());
         project.setImpact(dto.impact());
         project.setImage(dto.image());
+        project.setVideoUrl(dto.videoUrl());
 
         if (dto.features() != null) {
             project.getFeatures().clear();
@@ -54,9 +72,6 @@ public class ProjectService {
             project.getDetails().clear();
             project.getDetails().putAll(dto.details());
         }
-
-        Project savedProject = projectRepository.save(project);
-        return mapToDTO(savedProject);
     }
 
     private ProjectResponseDTO mapToDTO(Project project) {
@@ -72,6 +87,7 @@ public class ProjectService {
             project.getDescription(),
             project.getImpact(),
             project.getImage(),
+            project.getVideoUrl(),
             featureDTOs,
             project.getDetails()
         );

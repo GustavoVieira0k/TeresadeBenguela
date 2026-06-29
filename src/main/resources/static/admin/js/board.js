@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadBoardMembers();
+    document.getElementById('new-member-form').addEventListener('submit', createMember);
 });
 
 async function loadBoardMembers() {
@@ -7,53 +8,83 @@ async function loadBoardMembers() {
     const template = document.getElementById('board-member-template');
 
     try {
-        const response = await fetch('/api/board');
-        const members = await response.json();
-
-        container.innerHTML = ''; 
+        const res = await fetch('/api/board');
+        const members = await res.json();
+        container.innerHTML = '';
 
         members.forEach(member => {
             const clone = Array.from(template.content.cloneNode(true).children);
-            const domElement = clone.find(el => el.classList.contains('bg-gray-50'));
-
-            domElement.querySelector('.member-role-title').textContent = member.role;
-            domElement.querySelector('.member-id').value = member.id;
-            domElement.querySelector('.member-role').value = member.role;
-            domElement.querySelector('.member-name').value = member.name;
-
-            container.appendChild(domElement);
+            const el = clone.find(el => el.classList.contains('bg-gray-50'));
+            el.querySelector('.member-role-title').textContent = member.role;
+            el.querySelector('.member-id').value = member.id;
+            el.querySelector('.member-role').value = member.role;
+            el.querySelector('.member-name').value = member.name;
+            el.querySelector('.member-delete-btn').setAttribute('onclick', `deleteMember(${member.id}, '${member.name.replace(/'/g, "\\'")}')`);
+            container.appendChild(el);
         });
-
-    } catch (error) {
-        console.error('Erro ao carregar diretoria:', error);
+    } catch (e) {
         container.innerHTML = '<p class="text-red-500">Erro ao carregar dados do servidor.</p>';
     }
 }
 
 async function updateMember(event, form) {
     event.preventDefault();
-
     const id = form.querySelector('.member-id').value;
     const role = form.querySelector('.member-role').value;
     const name = form.querySelector('.member-name').value;
 
-    const data = { role, name };
-
     try {
-        const response = await fetch(`/api/board/${id}`, {
+        const res = await fetch(`/api/board/${id}`, {
             method: 'PUT',
             headers: getAuthHeaders(),
-            body: JSON.stringify(data)
+            body: JSON.stringify({ role, name })
         });
-
-        if (response.ok) {
-            showAlert('Diretoria atualizada com sucesso!');
+        if (res.ok) {
+            showAlert('Membro atualizado com sucesso!');
+            loadBoardMembers();
         } else {
-            const result = await response.json();
-            showAlert(`Erro: ${result.message || 'Falha ao atualizar'}`, 'error');
+            showAlert('Erro ao atualizar membro.', 'error');
         }
-    } catch (error) {
-        console.error('Erro ao atualizar.', error);
-        showAlert('Erro de conexão ao tentar atualizar.', 'error');
+    } catch (e) {
+        showAlert('Erro de conexão.', 'error');
+    }
+}
+
+async function createMember(e) {
+    e.preventDefault();
+    const role = document.getElementById('new-role').value.trim();
+    const name = document.getElementById('new-name').value.trim();
+    if (!role || !name) return;
+
+    try {
+        const res = await fetch('/api/board', {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ role, name })
+        });
+        if (res.ok) {
+            showAlert('Membro adicionado com sucesso!');
+            document.getElementById('new-member-form').reset();
+            loadBoardMembers();
+        } else {
+            showAlert('Erro ao adicionar membro.', 'error');
+        }
+    } catch (e) {
+        showAlert('Erro de conexão.', 'error');
+    }
+}
+
+async function deleteMember(id, name) {
+    if (!confirm(`Excluir o membro "${name}"?`)) return;
+    try {
+        const res = await fetch(`/api/board/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        if (res.ok) {
+            showAlert('Membro excluído.', 'success');
+            loadBoardMembers();
+        } else {
+            showAlert('Erro ao excluir membro.', 'error');
+        }
+    } catch (e) {
+        showAlert('Erro de conexão.', 'error');
     }
 }

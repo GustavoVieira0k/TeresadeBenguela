@@ -1,5 +1,8 @@
 HELP.md
 target/
+
+### Segredos — nunca commitar ###
+.env
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -31,3 +34,8 @@ build/
 
 ### VS Code ###
 .vscode/
+.claude/
+.serena/
+CLAUDE.md
+test_images
+

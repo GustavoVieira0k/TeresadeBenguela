@@ -29,5 +29,12 @@ public class VolunteerService {
     }
     public List<Volunteer> listarTodos() {
         return volunteerRepository.findAll();
-}
+    }
+
+    public void deletar(Long id) {
+        if (!volunteerRepository.existsById(id)) {
+            throw new jakarta.persistence.EntityNotFoundException("Voluntário não encontrado: " + id);
+        }
+        volunteerRepository.deleteById(id);
+    }
 }

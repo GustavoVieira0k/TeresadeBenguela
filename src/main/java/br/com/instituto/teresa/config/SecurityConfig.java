@@ -44,15 +44,33 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/volunteers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/api/projects/**").authenticated()
+                        // Projetos
                         .requestMatchers(HttpMethod.POST, "/api/projects/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/projects/**").authenticated()
+                        // Diretoria
+                        .requestMatchers(HttpMethod.POST, "/api/board/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+                        // Candidaturas de voluntários
+                        .requestMatchers(HttpMethod.DELETE, "/api/volunteers/**").authenticated()
+                        // Página de voluntários
                         .requestMatchers(HttpMethod.PUT, "/api/volunteer/page/**").authenticated()
-                        .requestMatchers("/", "/index.html", "/projetos.html", "/voluntario.html", "/styles/**", "/scripts/**", "/assets/**", "/context/**", "/admin/**", "/favicon.ico").permitAll()
+                        // Discografia
+                        .requestMatchers(HttpMethod.POST, "/api/discography/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/discography/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/discography/**").authenticated()
+                        // Notícias
+                        .requestMatchers(HttpMethod.POST, "/api/news/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/news/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/news/**").authenticated()
+                        // Configurações do site
+                        .requestMatchers(HttpMethod.PUT, "/api/site-settings/**").authenticated()
+                        // Arquivos estáticos
+                        .requestMatchers("/", "/index.html", "/projetos.html", "/voluntario.html", "/noticias.html", "/styles/**", "/scripts/**", "/assets/**", "/uploads/**", "/context/**", "/admin/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated()
                 )
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // necessário para o H2 console
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -27,7 +27,7 @@ public class ProjectControllerTest {
     @Test
     public void testGetAllProjects() throws Exception {
         ProjectResponseDTO p1 = new ProjectResponseDTO(
-            1L, "code", "Test Project", "Sub", "Desc", "Impact", "img.jpg", Collections.emptyList(), Collections.emptyMap()
+            1L, "code", "Test Project", "Sub", "Desc", "Impact", "img.jpg", null, Collections.emptyList(), Collections.emptyMap()
         );
 
         Mockito.when(projectService.getAllProjects()).thenReturn(Arrays.asList(p1));

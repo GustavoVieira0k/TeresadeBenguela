@@ -25,6 +25,8 @@ public class Project {
     
     private String image;
 
+    private String videoUrl;
+
     @ElementCollection // Mapeia uma coleção de tipos básicos ou entidades embutidas (List) relacionada à classe principal
     @CollectionTable(name = "project_features", joinColumns = @JoinColumn(name = "project_id")) // Nomeia a tabela dependente e define qual será sua chave estrangeira
     private List<ProjectFeature> features;
@@ -51,6 +53,8 @@ public class Project {
     public void setImpact(String impact) { this.impact = impact; }
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
+    public String getVideoUrl() { return videoUrl; }
+    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
     public List<ProjectFeature> getFeatures() { return features; }
     public void setFeatures(List<ProjectFeature> features) { this.features = features; }
     public Map<String, String> getDetails() { return details; }

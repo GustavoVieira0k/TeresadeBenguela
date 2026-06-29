@@ -21,6 +21,7 @@ public class VolunteerPage {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+
     @ElementCollection
     private List<VolunteerBenefit> benefits = new ArrayList<>();
 

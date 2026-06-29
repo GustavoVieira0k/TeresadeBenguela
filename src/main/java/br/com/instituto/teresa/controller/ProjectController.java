@@ -20,14 +20,23 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public List<ProjectResponseDTO> getAllProjects() {
+        return projectService.getAllProjects();
+    }
+
+    @PostMapping
+    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody @Valid ProjectRequestDTO dto) {
+        return ResponseEntity.ok(projectService.createProject(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> updateProject(
-            @PathVariable Long id,
-            @RequestBody @Valid ProjectRequestDTO dto) {
+    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable long id, @RequestBody @Valid ProjectRequestDTO dto) {
         return ResponseEntity.ok(projectService.updateProject(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable long id) {
+        projectService.deleteProject(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -28,6 +28,7 @@
           <a href="voluntario.html"
             class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
           <a href="projetos.html" class="text-primary font-semibold">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </nav>
         <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
           <i class="fas fa-bars text-xl"></i>
@@ -39,6 +40,7 @@
           <a href="voluntario.html"
             class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
           <a href="projetos.html" class="text-primary font-semibold">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </div>
       </div>
     </div>
@@ -80,6 +82,19 @@
     function isMobileDevice() {
       return window.innerWidth <= 1024 ||
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    function _ytId(url) {
+      if (!url) return null;
+      const s = url.trim();
+      let m = s.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/\/embed\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+      return null;
     }
 
     let detailedProjects = [];
@@ -132,13 +147,24 @@
                 <div class="xl:col-span-5 content-reveal">
                   <div class="project-card-modern p-8">
                     <div class="project-image-modern mb-6">
-                      <img 
-                        src="${project.image}" 
+                      <img
+                        src="${project.image}"
                         class="w-full max-h-[480px] object-cover transition-transform duration-700"
                         loading="lazy"
                       >
                     </div>
-                    
+
+                    ${(function() {
+                      const vid = _ytId(project.videoUrl);
+                      return vid ? `
+                    <div style="border-radius:1rem;overflow:hidden;margin-bottom:1.5rem;">
+                      <iframe src="https://www.youtube-nocookie.com/embed/${vid}?rel=0"
+                        style="width:100%;aspect-ratio:16/9;border:0;display:block;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"></iframe>
+                    </div>` : '';
+                    })()}
+
                     <div class="impact-card-modern">
                       <h3 class="text-xl font-bold mb-3 text-white">
                         <i class="fas fa-heart mr-2 text-yellow-300"></i>
@@ -172,6 +198,7 @@
           description: backendProj.description || '',
           impact: backendProj.impact || '',
           image: backendProj.image || '',
+          videoUrl: backendProj.videoUrl || '',
           features: backendProj.features || [],
           details: backendProj.details || {}
         }));

@@ -25,6 +25,7 @@
           <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
           <a href="voluntario.html" class="text-primary font-semibold">Voluntários</a>
           <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </nav>
         <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
           <i class="fas fa-bars text-xl"></i>
@@ -35,6 +36,7 @@
           <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
           <a href="voluntario.html" class="text-primary font-semibold">Voluntários</a>
           <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
         </div>
       </div>
     </div>
@@ -59,46 +61,8 @@
           <div class="space-y-6">
             <h2 class="text-2xl font-bold text-gray-900">Por que ser voluntário?</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="flex items-start space-x-3">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <i class="fas fa-heart text-sm"></i>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Impacto Social</h3>
-                  <p class="text-gray-600 text-sm">Contribua diretamente para a preservação cultural</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-3">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <i class="fas fa-users  text-sm"></i>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Comunidade</h3>
-                  <p class="text-gray-600 text-sm">Faça parte de uma família acolhedora</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-3">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <i class="fas fa-graduation-cap  text-sm"></i>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Aprendizado</h3>
-                  <p class="text-gray-600 text-sm">Aprenda sobre cultura e tradições únicas</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-3">
-                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <i class="fas fa-star  text-sm"></i>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Experiência</h3>
-                  <p class="text-gray-600 text-sm">Desenvolva habilidades e conecte-se com pessoas</p>
-                </div>
-              </div>
+            <div id="benefits-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Populado via API /api/volunteer/page -->
             </div>
           </div>
         </div>
@@ -176,6 +140,22 @@
           document.getElementById('hero-title1').textContent = data.title1;
           document.getElementById('hero-title2').textContent = data.title2;
           document.getElementById('hero-description').textContent = data.description;
+
+          const benefits = data.benefits || [];
+          const container = document.getElementById('benefits-container');
+          if (container && benefits.length > 0) {
+            container.innerHTML = benefits.map(b => `
+              <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="${b.icon} text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">${b.title}</h3>
+                  <p class="text-gray-600 text-sm">${b.description}</p>
+                </div>
+              </div>
+            `).join('');
+          }
         }
       } catch (e) {
         console.error('Textos default mantidos (falha/API offline)', e);
