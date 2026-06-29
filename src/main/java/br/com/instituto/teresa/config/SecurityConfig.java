@@ -34,14 +34,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("*"));
+                    // Altere o "*" para a origem exata do seu front-end
+                    corsConfig.setAllowedOrigins(List.of("https://gustavovieira0k.github.io"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("*"));
+                    corsConfig.setAllowCredentials(true); // Permite o envio de tokens e headers de autenticação
                     return corsConfig;
                 }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/volunteers").permitAll()
+                        // OBSERVAÇÃO: Garanta que esta rota bate com o que o seu JS chama!
+                        // Se o seu JS chama '/auth/login', adicione o "/auth/login" aqui sem o /api também:
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/auth/login", "/api/volunteers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         // Projetos
