@@ -1,0 +1,115 @@
+:root {
+  --brand-primary: #d88e45;
+  --brand-secondary: #fedf8a;
+  --brand-accent:   #f09134;
+  --brand-dark:     #a6490c;
+  --brand-darkest:  #5e2404;
+}
+
+/* ── Nav ─────────────────────────────────────────── */
+.admin-nav {
+  position: relative;
+}
+.admin-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right,
+    var(--brand-darkest),
+    var(--brand-dark),
+    var(--brand-primary),
+    var(--brand-accent),
+    var(--brand-secondary));
+}
+
+.nav-brand-active {
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-darkest) !important;
+}
+
+/* ── Logo "Admin" ────────────────────────────────── */
+.admin-logo-text {
+  background: linear-gradient(to right, var(--brand-dark), var(--brand-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Botões primários (Salvar / Entrar) ──────────── */
+.btn-brand {
+  background: linear-gradient(to right, var(--brand-primary), var(--brand-accent));
+  color: white !important;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-brand:hover {
+  background: linear-gradient(to right, var(--brand-dark), var(--brand-primary));
+  box-shadow: 0 4px 14px rgba(216, 142, 69, 0.45);
+  transform: translateY(-1px);
+}
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+/* Variante menor (template de membro da diretoria) */
+.btn-brand-sm {
+  background: linear-gradient(to right, var(--brand-primary), var(--brand-accent));
+  color: white !important;
+  transition: all 0.2s ease;
+}
+.btn-brand-sm:hover {
+  background: linear-gradient(to right, var(--brand-dark), var(--brand-primary));
+}
+
+/* ── Links e botões de edição em listas ──────────── */
+.link-brand {
+  color: var(--brand-primary);
+  transition: color 0.15s;
+}
+.link-brand:hover {
+  color: var(--brand-dark);
+}
+
+.btn-edit-brand {
+  color: var(--brand-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.15s;
+}
+.btn-edit-brand:hover {
+  color: var(--brand-dark);
+}
+
+/* ── Focus ring em inputs ────────────────────────── */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px rgba(216, 142, 69, 0.2) !important;
+  outline: none !important;
+}
+
+/* ── Checkbox ────────────────────────────────────── */
+input[type="checkbox"] {
+  accent-color: var(--brand-primary);
+}
+
+/* ── Cards do dashboard ──────────────────────────── */
+.dashboard-card {
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+.dashboard-card:hover {
+  border-bottom-color: var(--brand-primary) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(216, 142, 69, 0.18) !important;
+}
+
+/* ── Card de login ───────────────────────────────── */
+.login-card {
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, var(--brand-dark), var(--brand-primary), var(--brand-accent)) 1;
+}

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Teresa - Preservando a Cultura Quilombola</title>
+  <meta name="description"
+    content="Mais de 100 anos de história, tradições e resistência cultural em Vila Bela da Santíssima Trindade - MT">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./styles/index.css">
+  <script src="./scripts/projects.js"></script>
+</head>
+
+<body>
+  <!-- Header fixo -->
+  <div class="fixed top-0 left-0 right-0 z-50 header-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3">
+          <img src="./assets/logo.svg" alt="Logo Teresa" class="w-10 h-10">
+          <span class="font-bold text-gray-900">Instituto Tereza de Benguela</span>
+        </a>
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html"
+            class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
+          <a href="projetos.html" class="text-primary font-semibold">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
+        </nav>
+        <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 mobile-menu-glass rounded-lg">
+        <div class="flex flex-col space-y-3 pt-4">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html"
+            class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
+          <a href="projetos.html" class="text-primary font-semibold">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero-section relative flex items-center justify-center overflow-hidden h-screen pt-20">
+    <div class="absolute inset-0 hero-bg">
+      <div class="absolute inset-0 hero-overlay"></div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+          Nossos <span class="gradient-text">Projetos</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+          Iniciativas que celebram e preservam a rica herança cultural quilombola
+        </p>
+        <div class="flex justify-center">
+          <button onclick="scrollToProject(0)"
+            class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg flex items-center justify-center space-x-2">
+            <span>Explorar Projetos</span>
+            <i class="fas fa-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white scroll-indicator">
+      <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-white/70 rounded-full mt-2 scroll-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="projects-sections"></div>
+
+  <script>
+    // Detectar se é mobile
+    function isMobileDevice() {
+      return window.innerWidth <= 1024 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    function _ytId(url) {
+      if (!url) return null;
+      const s = url.trim();
+      let m = s.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/\/embed\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+      return null;
+    }
+
+    let detailedProjects = [];
+
+    function createProjectSection(project, index) {
+      const sectionNumber = String(index + 1).padStart(2, '0');
+
+      return `
+        <section class="project-section-modern h-screen relative" id="project-${project.id}">
+          <div class="project-content-container">
+            <div class="section-number">${sectionNumber}</div>
+            
+            <div class="floating-elements">
+              <div class="floating-element"></div>
+              <div class="floating-element"></div>
+              <div class="floating-element"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+              <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+                
+                <div class="xl:col-span-7 space-y-8 content-reveal">
+                  <div class="text-reveal">
+                    <h2 class="text-4xl lg:text-6xl font-black text-gray-900 mb-4 leading-tight">
+                      ${project.title.split(' ').map(word => `<span>${word}</span>`).join(' ')}
+                    </h2>
+                    
+                    <p class="text-2xl text-primary font-semibold mb-6">
+                      ${project.subtitle}
+                    </p>
+                    
+                    <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                      ${project.description}
+                    </p>
+                  </div>
+
+                  <div class="space-y-3">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Características do Projeto:</h3>
+                    ${project.features.map(feature => `
+                      <div class="feature-item-modern">
+                        <div class="feature-icon-modern">
+                          <i class="${feature.icon}"></i>
+                        </div>
+                        <span class="text-gray-700 font-medium">${feature.text}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                
+                <div class="xl:col-span-5 content-reveal">
+                  <div class="project-card-modern p-8">
+                    <div class="project-image-modern mb-6">
+                      <img
+                        src="${project.image}"
+                        class="w-full max-h-[480px] object-cover transition-transform duration-700"
+                        loading="lazy"
+                      >
+                    </div>
+
+                    ${(function() {
+                      const vid = _ytId(project.videoUrl);
+                      return vid ? `
+                    <div style="border-radius:1rem;overflow:hidden;margin-bottom:1.5rem;">
+                      <iframe src="https://www.youtube-nocookie.com/embed/${vid}?rel=0"
+                        style="width:100%;aspect-ratio:16/9;border:0;display:block;"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"></iframe>
+                    </div>` : '';
+                    })()}
+
+                    <div class="impact-card-modern">
+                      <h3 class="text-xl font-bold mb-3 text-white">
+                        <i class="fas fa-heart mr-2 text-yellow-300"></i>
+                        Impacto Cultural
+                      </h3>
+                      <p class="text-gray-200 leading-relaxed mb-4">
+                        ${project.impact}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    async function loadProjectsFromAPI() {
+      try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) throw new Error('Erro ao buscar projetos');
+        
+        const data = await response.json();
+        
+        // Mapear os campos do backend para nossa estrutura de layout
+        detailedProjects = data.map(backendProj => ({
+          id: backendProj.code || 'projeto-' + backendProj.id,
+          title: backendProj.title || '',
+          subtitle: backendProj.subtitle || '',
+          description: backendProj.description || '',
+          impact: backendProj.impact || '',
+          image: backendProj.image || '',
+          videoUrl: backendProj.videoUrl || '',
+          features: backendProj.features || [],
+          details: backendProj.details || {}
+        }));
+
+        renderProjectSections();
+
+        // Ajustar posições e animações logo após renderização
+        setTimeout(() => {
+          adjustSectionNumbers();
+          initAnimations();
+        }, 100);
+
+      } catch (error) {
+        console.error('Erro ao carregar projetos da API:', error);
+      }
+    }
+
+    function renderProjectSections() {
+      const container = document.getElementById('projects-sections');
+      if (container) {
+        container.innerHTML = detailedProjects.map((project, index) =>
+          createProjectSection(project, index)
+        ).join('');
+      }
+    }
+
+    function getHeaderHeight() {
+      const header = document.querySelector('.header-glass');
+      return header ? header.offsetHeight : 80;
+    }
+
+    function scrollToSection(index) {
+      const allSections = document.querySelectorAll('section');
+      if (index >= 0 && index < allSections.length) {
+        const headerHeight = getHeaderHeight();
+        const targetSection = allSections[index];
+        const offsetTop = targetSection.offsetTop;
+
+        if (index === 0) {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        } else {
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+        currentSection = index;
+      }
+    }
+
+    function scrollToProject(index) {
+      const projectSections = document.querySelectorAll('[id^="project-"]');
+      if (projectSections[index]) {
+        const headerHeight = getHeaderHeight();
+        const targetTop = projectSections[index].offsetTop;
+
+        window.scrollTo({
+          top: targetTop,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    }
+
+    let isScrolling = false;
+    let currentSection = 0;
+    const isDesktop = !isMobileDevice();
+
+    function getCurrentSection() {
+      const allSections = document.querySelectorAll('section');
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      for (let i = 0; i < allSections.length; i++) {
+        const section = allSections[i];
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+
+        if (scrollPosition >= sectionTop - windowHeight / 2 &&
+          scrollPosition < sectionTop + sectionHeight - windowHeight / 2) {
+          return i;
+        }
+      }
+      return 0;
+    }
+
+    function adjustSectionNumbers() {
+      const headerHeight = getHeaderHeight();
+      const sectionNumbers = document.querySelectorAll('.section-number');
+
+      sectionNumbers.forEach(number => {
+        number.style.top = `${headerHeight + 32}px`; // 32px adicional de margem
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadProjectsFromAPI();
+
+      document.documentElement.style.scrollBehavior = 'smooth';
+
+      window.addEventListener('resize', adjustSectionNumbers);
+    });
+
+    function initAnimations() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+
+            // Animar texto palavra por palavra
+            const textReveal = entry.target.querySelector('.text-reveal');
+            if (textReveal) {
+              const spans = textReveal.querySelectorAll('span');
+              spans.forEach((span, index) => {
+                span.style.animationDelay = `${index * 0.1}s`;
+                span.style.animationFillMode = 'forwards';
+              });
+            }
+          }
+        });
+      }, observerOptions);
+
+      setTimeout(() => {
+        document.querySelectorAll('.content-reveal').forEach((el) => {
+          observer.observe(el);
+        });
+      }, 100);
+
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.floating-element');
+
+        parallaxElements.forEach((element, index) => {
+          const speed = (index + 1) * 0.3;
+          const yPos = -(scrolled * speed);
+          element.style.transform = `translateY(${yPos}px) rotate(${scrolled * 0.1}deg)`;
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

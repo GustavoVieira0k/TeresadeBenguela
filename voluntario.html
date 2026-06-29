@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Teresa - Preservando a Cultura Quilombola</title>
+  <meta name="description"
+    content="Mais de 100 anos de história, tradições e resistência cultural em Vila Bela da Santíssima Trindade - MT">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./styles/index.css">
+</head>
+
+<body class="h-screen overflow-hidden">
+  <div class="fixed top-0 left-0 right-0 z-50 header-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3">
+          <img src="./assets/logo.svg" alt="Logo Teresa" class="w-10 h-10">
+          <span class="font-bold text-gray-900">Instituto Tereza de Benguela</span>
+        </a>
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html" class="text-primary font-semibold">Voluntários</a>
+          <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
+        </nav>
+        <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 mobile-menu-glass rounded-lg">
+        <div class="flex flex-col space-y-3 pt-4">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html" class="text-primary font-semibold">Voluntários</a>
+          <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Notícias</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="h-screen bg-gradient-to-br from-white via-orange-50 to-yellow-50 pt-20">
+    <div class="h-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 h-full items-center">
+        <div class="space-y-8">
+          <div class="text-center lg:text-left" id="volunteer-hero-content">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <span id="hero-title1" style="color: #5E2404;">Transforme vidas através da</span><br>
+              <span id="hero-title2" class="gradient-text">Cultura Quilombola</span>
+            </h1>
+
+            <p id="hero-description" class="text-xl text-gray-600 mb-8 leading-relaxed">
+              Una-se a uma comunidade apaixonada por preservar tradições centenárias.
+              Cada voluntário é uma peça fundamental na nossa missão cultural.
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            <h2 class="text-2xl font-bold text-gray-900">Por que ser voluntário?</h2>
+
+            <div id="benefits-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Populado via API /api/volunteer/page -->
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-8 shadow-2xl h-fit">
+          <div class="text-center mb-6">
+            <h2 class="text-3xl font-bold mb-2" style="color: #5E2404;">
+              Candidate-se Agora
+            </h2>
+            <p class="text-gray-600">
+              Preencha o formulário e faça parte da nossa família
+            </p>
+          </div>
+
+          <form id="volunteerForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome Completo *</label>
+                <input type="text" id="name" name="name" required
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-colors">
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                <input type="email" id="email" name="email" required
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-colors">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Telefone</label>
+                <input type="tel" id="phone" name="phone"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-colors">
+              </div>
+
+              <div>
+                <label for="age" class="block text-sm font-semibold text-gray-700 mb-2">Faixa Etária</label>
+                <select id="age" name="age"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-colors">
+                  <option value="">Selecione</option>
+                  <option value="Entre 16-25">16-25 anos</option>
+                  <option value="Entre 26-35">26-35 anos</option>
+                  <option value="Entre 36-50">36-50 anos</option>
+                  <option value="Acima de 50+">Acima de 50 anos</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="motivation" class="block text-sm font-semibold text-gray-700 mb-2">Motivação *</label>
+              <textarea id="motivation" name="motivation" rows="3" required
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-colors resize-none"
+                placeholder="Conte-nos por que quer ser voluntário..."></textarea>
+            </div>
+
+            <div class="text-center">
+              <button type="submit"
+                class="w-full bg-primary px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <i class="fas fa-paper-plane mr-2"></i>
+                Enviar Candidatura
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>    // Carregar chamadas dinâmicas
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/volunteer/page');
+        if(res.ok) {
+          const data = await res.json();
+          document.getElementById('hero-title1').textContent = data.title1;
+          document.getElementById('hero-title2').textContent = data.title2;
+          document.getElementById('hero-description').textContent = data.description;
+
+          const benefits = data.benefits || [];
+          const container = document.getElementById('benefits-container');
+          if (container && benefits.length > 0) {
+            container.innerHTML = benefits.map(b => `
+              <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="${b.icon} text-sm"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900">${b.title}</h3>
+                  <p class="text-gray-600 text-sm">${b.description}</p>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (e) {
+        console.error('Textos default mantidos (falha/API offline)', e);
+      }
+    });
+    document.getElementById('volunteerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+
+      if (!data.name || !data.email || !data.motivation || !data.age) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      const submitButton = this.querySelector('button[type="submit"]');
+      const originalText = submitButton.innerHTML;
+
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
+      submitButton.disabled = true;
+
+      try {
+        const response = await fetch('/api/volunteers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          alert('Candidatura enviada com sucesso! Logo entraremos em contato.');
+          this.reset();
+        } else {
+          alert('Falha ao enviar candidatura. Tente novamente mais tarde.');
+        }
+      } catch (error) {
+        console.error('Erro ao enviar form: ', error);
+        alert('Erro de conexão com o servidor.');
+      } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+      }
+    });
+
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    }
+
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('.header-glass');
+      const scrollPosition = window.scrollY;
+
+      if (scrollPosition > 50) {
+        header.classList.add('header-scrolled');
+      } else {
+        header.classList.remove('header-scrolled');
+      }
+    });
+  </script>
+</body>
+
+</html>

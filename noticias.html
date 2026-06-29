@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Teresa - Notícias</title>
+  <meta name="description" content="Acompanhe as últimas notícias do Instituto Tereza de Benguela">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./styles/index.css">
+  <style>
+    /* Desabilitar scroll-snap para rolagem livre na lista de notícias */
+    html { scroll-snap-type: none !important; }
+
+    .news-hero {
+      height: 50vh;
+      min-height: 320px;
+    }
+
+    .news-card-pub {
+      background: white;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      transition: all .35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card-pub:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(216,142,69,.22);
+    }
+    .news-card-pub .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+    .news-card-pub .card-img-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--color-darkest), var(--color-primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,.4);
+      font-size: 3rem;
+    }
+    .news-card-pub .card-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: .75rem;
+    }
+    .news-card-pub h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.4;
+      margin-bottom: .6rem;
+    }
+    .news-card-pub p {
+      font-size: .9rem;
+      color: #6b7280;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .btn-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: 1.25rem;
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      transition: color .2s, gap .2s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .btn-read-more:hover { color: var(--color-dark); gap: .7rem; }
+
+    /* Modal */
+    #news-modal {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,.55);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    #news-modal.open { opacity: 1; pointer-events: all; }
+    #news-modal-box {
+      background: white;
+      border-radius: 1.5rem;
+      max-width: 680px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform .25s ease;
+    }
+    #news-modal.open #news-modal-box { transform: translateY(0); }
+    #news-modal-box img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 1.5rem 1.5rem 0 0; display: block; }
+    #news-modal-body { padding: 2rem; }
+    #news-modal-body h2 { font-size: 1.5rem; font-weight: 800; color: #111; margin-bottom: .5rem; }
+    #news-modal-body .modal-date { font-size: .8rem; color: var(--color-primary); font-weight: 600; margin-bottom: 1.25rem; }
+    #news-modal-body p { color: #374151; line-height: 1.8; white-space: pre-wrap; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 5rem 2rem; color: #9ca3af; }
+    .empty-state i { font-size: 3.5rem; margin-bottom: 1rem; color: #d1d5db; }
+  </style>
+</head>
+
+<body>
+  <!-- Header fixo -->
+  <div class="fixed top-0 left-0 right-0 z-50 header-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-3">
+          <img src="./assets/logo.svg" alt="Logo Teresa" class="w-10 h-10" onerror="this.style.display='none'">
+          <span class="font-bold text-gray-900">Instituto Tereza de Benguela</span>
+        </a>
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
+          <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-primary font-semibold">Notícias</a>
+        </nav>
+        <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 mobile-menu-glass rounded-lg">
+        <div class="flex flex-col space-y-3 pt-4 px-4">
+          <a href="index.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Início</a>
+          <a href="voluntario.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Voluntários</a>
+          <a href="projetos.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Projetos</a>
+          <a href="noticias.html" class="text-primary font-semibold">Notícias</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="news-hero relative flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 hero-bg">
+      <div class="absolute inset-0 hero-overlay"></div>
+    </div>
+    <div class="relative z-10 text-center px-4">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">
+        Nossas <span class="gradient-text">Notícias</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-200 max-w-xl mx-auto">
+        Fique por dentro das últimas novidades do Instituto Tereza de Benguela
+      </p>
+    </div>
+  </section>
+
+  <!-- Lista de notícias -->
+  <section class="py-20 bg-gradient-to-br from-gray-50 via-white to-orange-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="col-span-full text-center py-20 text-gray-400">
+          <i class="fas fa-spinner fa-spin text-3xl mb-4 block" style="color:var(--color-primary)"></i>
+          <p>Carregando notícias…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-bg py-20 flex items-center justify-center">
+    <div class="text-center px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Faça parte desta história</h2>
+      <p class="text-lg text-yellow-100 mb-8 max-w-xl mx-auto">Junte-se a nós como voluntário e ajude a preservar a cultura quilombola.</p>
+      <a href="voluntario.html" class="btn-cta-primary px-8 py-4 rounded-full font-semibold text-lg inline-flex items-center gap-2">
+        <i class="fas fa-users"></i> Seja Voluntário
+      </a>
+    </div>
+  </section>
+
+  <!-- Modal de notícia completa -->
+  <div id="news-modal" onclick="closeModal(event)">
+    <div id="news-modal-box">
+      <div id="news-modal-body">
+        <!-- preenchido via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function _esc(s) {
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function _ytId(url) {
+      if (!url) return null;
+      const s = url.trim();
+      let m = s.match(/youtu\.be\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      m = s.match(/\/embed\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[1];
+      if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+      return null;
+    }
+
+    function _fmtDate(d) {
+      if (!d) return '';
+      try {
+        return new Date(d + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+      } catch { return d; }
+    }
+
+    let allNews = [];
+
+    async function loadNews() {
+      const grid = document.getElementById('news-grid');
+      try {
+        const res = await fetch('/api/news');
+        allNews = await res.json();
+        if (!allNews.length) {
+          grid.innerHTML = `<div class="col-span-full empty-state"><i class="fas fa-newspaper"></i><p class="text-lg font-medium mt-3">Nenhuma notícia publicada ainda.</p></div>`;
+          return;
+        }
+        grid.innerHTML = allNews.map(n => {
+          const ytId = _ytId(n.videoUrl);
+          const thumbSrc = ytId
+            ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+            : n.imageUrl;
+          const playBadge = ytId
+            ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+                <div style="width:52px;height:52px;background:rgba(0,0,0,.65);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                  <i class="fab fa-youtube" style="font-size:1.6rem;color:#ff0000;"></i>
+                </div></div>` : '';
+          const imgHtml = thumbSrc
+            ? `<div style="position:relative;"><img src="${_esc(thumbSrc)}" alt="${_esc(n.title)}" class="card-img" onerror="this.parentElement.outerHTML='<div class=\\'card-img-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">${playBadge}</div>`
+            : `<div class="card-img-placeholder"><i class="fas fa-newspaper"></i></div>`;
+          const hasDetail = n.content || ytId;
+          return `
+            <div class="news-card-pub">
+              ${imgHtml}
+              <div class="card-body">
+                <span class="news-date-badge"><i class="fas fa-calendar-alt"></i>${_esc(_fmtDate(n.publishedAt))}</span>
+                <h3>${_esc(n.title)}</h3>
+                <p>${_esc(n.summary || '')}</p>
+                ${hasDetail ? `<button class="btn-read-more" onclick="openModal(${n.id})">Ler mais <i class="fas fa-arrow-right"></i></button>` : ''}
+              </div>
+            </div>`;
+        }).join('');
+      } catch {
+        grid.innerHTML = `<div class="col-span-full empty-state"><i class="fas fa-exclamation-triangle"></i><p class="mt-3">Erro ao carregar notícias.</p></div>`;
+      }
+    }
+
+    function openModal(id) {
+      const n = allNews.find(x => x.id === id);
+      if (!n) return;
+      const ytId = _ytId(n.videoUrl);
+      const imgHtml = n.imageUrl && !ytId ? `<img src="${_esc(n.imageUrl)}" alt="${_esc(n.title)}">` : '';
+      const videoHtml = ytId
+        ? `<div style="position:relative;background:#000;border-radius:1.5rem 1.5rem 0 0;overflow:hidden;">
+             <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0&autoplay=1" style="width:100%;aspect-ratio:16/9;border:0;display:block;"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+           </div>` : '';
+      const hasPad = imgHtml || videoHtml;
+      document.getElementById('news-modal-body').innerHTML = `
+        ${videoHtml}${imgHtml}
+        <div style="padding:${hasPad ? '1.75rem 2rem 2rem' : '2rem'}">
+          <p class="modal-date"><i class="fas fa-calendar-alt" style="margin-right:.4rem"></i>${_esc(_fmtDate(n.publishedAt))}</p>
+          <h2>${_esc(n.title)}</h2>
+          ${n.content ? `<p>${_esc(n.content)}</p>` : ''}
+        </div>`;
+      document.getElementById('news-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById('news-modal')) _doClose();
+    }
+
+    function _doClose() {
+      const modal = document.getElementById('news-modal');
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      // Para o iframe do YouTube limpando o src
+      const iframe = modal.querySelector('iframe');
+      if (iframe) iframe.src = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') _doClose();
+    });
+
+    document.addEventListener('DOMContentLoaded', loadNews);
+  </script>
+</body>
+
+</html>

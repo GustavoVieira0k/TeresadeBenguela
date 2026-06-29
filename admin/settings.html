@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurações do Site - Admin Instituto Teresa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <script src="./js/common.js" defer></script>
+    <script src="./js/icon-picker.js" defer></script>
+    <script src="./js/image-picker.js" defer></script>
+    <script src="./js/settings.js" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow admin-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa" onerror="this.style.display='none'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
+                    </div>
+                    <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="board.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
+                        <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
+                        <a href="volunteers.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Sair <i class="fas fa-sign-out-alt ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div id="alert-message" class="hidden rounded-md p-4"></div>
+
+            <form id="settings-form" class="space-y-8">
+
+                <!-- Hero -->
+                <div class="bg-white shadow sm:rounded-lg p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Seção Hero (Topo da Página Inicial)</h2>
+                    <p class="text-sm text-gray-500 mb-6">O grande banner de entrada do site.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título principal</label>
+                            <input type="text" id="heroTitle" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Subtítulo</label>
+                            <textarea id="heroSubtitle" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Imagem de Fundo</label>
+                            <input type="text" id="heroImageUrl" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div class="bg-white shadow sm:rounded-lg p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Seção "Conheça o Instituto"</h2>
+                    <p class="text-sm text-gray-500 mb-6">Bloco de apresentação na página inicial.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título</label>
+                            <input type="text" id="aboutTitle" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Descrição</label>
+                            <textarea id="aboutDescription" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-gray-100">
+                            <div class="space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-700">Item 1</h3>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Ícone (classe FontAwesome)</label>
+                                    <input type="text" id="aboutItem1Icon" placeholder="fas fa-landmark" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Título</label>
+                                    <input type="text" id="aboutItem1Title" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Descrição</label>
+                                    <textarea id="aboutItem1Description" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <h3 class="text-sm font-semibold text-gray-700">Item 2</h3>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Ícone (classe FontAwesome)</label>
+                                    <input type="text" id="aboutItem2Icon" placeholder="fas fa-users" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Título</label>
+                                    <input type="text" id="aboutItem2Title" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500">Descrição</label>
+                                    <textarea id="aboutItem2Description" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="bg-white shadow sm:rounded-lg p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Seção "Faça Parte da Nossa História"</h2>
+                    <p class="text-sm text-gray-500 mb-6">Bloco de chamada para ação no final da página inicial.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título</label>
+                            <input type="text" id="ctaTitle" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Parágrafo</label>
+                            <textarea id="ctaDescription" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <div class="pt-2 border-t border-gray-100">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Itens da lista (4 bullets)</label>
+                            <div class="space-y-2">
+                                <input type="text" id="ctaBullet1" placeholder="Item 1" class="block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="ctaBullet2" placeholder="Item 2" class="block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="ctaBullet3" placeholder="Item 3" class="block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <input type="text" id="ctaBullet4" placeholder="Item 4" class="block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contato -->
+                <div class="bg-white shadow sm:rounded-lg p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-1">Contato e Localização</h2>
+                    <p class="text-sm text-gray-500 mb-6">Informações exibidas no rodapé da página inicial.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Telefone</label>
+                            <input type="text" id="contactPhone" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="text" id="contactEmail" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Cidade</label>
+                            <input type="text" id="locationCity" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Subtítulo da cidade</label>
+                            <input type="text" id="locationSubtitle" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Distância</label>
+                            <input type="text" id="locationDistance" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Comunidade</label>
+                            <input type="text" id="locationCommunity" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Detalhe da comunidade</label>
+                            <input type="text" id="locationCommunityDetail" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white btn-brand focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-save mr-2"></i> Salvar todas as configurações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciar Diretoria - Admin Instituto Teresa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <script src="./js/common.js" defer></script>
+    <script src="./js/board.js" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow admin-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa" onerror="this.style.display='none'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
+                    </div>
+                    <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="board.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
+                        <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
+                        <a href="volunteers.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Sair <i class="fas fa-sign-out-alt ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-10">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div id="alert-message" class="hidden rounded-md p-4"></div>
+
+            <!-- Membros existentes -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Membros da Diretoria</h2>
+                <div id="board-container" class="space-y-4">
+                    <p class="text-gray-500">Carregando dados...</p>
+                </div>
+            </div>
+
+            <!-- Adicionar novo membro -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Adicionar Novo Membro</h2>
+                <form id="new-member-form" class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="new-role" required placeholder="Cargo (ex: Secretário)" class="flex-1 border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                    <input type="text" id="new-name" required placeholder="Nome completo" class="flex-1 border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                        <i class="fas fa-plus mr-2"></i> Adicionar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <template id="board-member-template">
+        <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <h3 class="text-md font-bold text-gray-800 mb-2 member-role-title">Cargo</h3>
+            <form onsubmit="updateMember(event, this)">
+                <input type="hidden" name="id" class="member-id">
+                <input type="hidden" name="role" class="member-role">
+                <div class="flex items-center gap-3">
+                    <input type="text" name="name" class="member-name flex-1 border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500" required>
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white btn-brand">
+                        Salvar
+                    </button>
+                    <button type="button" class="member-delete-btn inline-flex justify-center py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </template>
+</body>
+</html>

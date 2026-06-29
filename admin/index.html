@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painel Admin - Instituto Teresa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <script src="./js/common.js" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow admin-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa Logo" onerror="this.src=''; this.alt='Teresa'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
+                    </div>
+                    <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="board.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
+                        <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
+                        <a href="volunteers.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Sair <i class="fas fa-sign-out-alt ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 py-6 sm:px-0">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">Painel de Controle</h1>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <a href="board.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-users text-4xl text-blue-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Diretoria</h3>
+                            <p class="mt-2 text-sm text-gray-500">Gerenciar membros e cargos exibidos na seção "Nossa Diretoria".</p>
+                        </div>
+                    </a>
+
+                    <a href="projects.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-project-diagram text-4xl text-green-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Projetos</h3>
+                            <p class="mt-2 text-sm text-gray-500">Criar, editar e excluir projetos sociais do instituto.</p>
+                        </div>
+                    </a>
+
+                    <a href="volunteers.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-hands-helping text-4xl text-orange-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Voluntários</h3>
+                            <p class="mt-2 text-sm text-gray-500">Editar a página de voluntários e ver candidaturas.</p>
+                        </div>
+                    </a>
+
+                    <a href="news.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-newspaper text-4xl text-purple-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Notícias</h3>
+                            <p class="mt-2 text-sm text-gray-500">Publicar, editar e remover notícias exibidas na página inicial.</p>
+                        </div>
+                    </a>
+
+                    <a href="discography.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-music text-4xl text-yellow-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Discografia</h3>
+                            <p class="mt-2 text-sm text-gray-500">Adicionar, editar e remover faixas musicais do tocador de áudio.</p>
+                        </div>
+                    </a>
+
+                    <a href="settings.html" class="bg-white overflow-hidden shadow rounded-lg dashboard-card">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <i class="fas fa-cog text-4xl text-gray-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900">Configurações</h3>
+                            <p class="mt-2 text-sm text-gray-500">Editar banner home, sessão sobre, telefone, email e localização do site.</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
