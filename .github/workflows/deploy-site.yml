@@ -1,9 +1,9 @@
-name: Deploy Maven Site to GitHub Pages
+name: Deploy Site to GitHub Pages
 
 on:
   push:
     branches:
-      - main # Ou a sua branch padrão (ex: master)
+      - main
 
 permissions:
   contents: write
@@ -17,21 +17,9 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # 2. Configura o Java (JDK 21 ou a versão que você usa)
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: 'maven'
-
-    # 3. Executa o comando do Maven para gerar o site
-    - name: Build Maven Site
-      run: mvn clean site
-
-    # 4. Publica a pasta target/site no GitHub Pages
+    # 2. Publica diretamente as suas páginas estáticas no GitHub Pages
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: target/site # Pasta que o Maven gerou
-        branch: gh-pages # Branch onde as páginas estáticas vão ficar
+        folder: src/main/resources/static # Aponta direto para a pasta do seu site!
+        branch: gh-pages
