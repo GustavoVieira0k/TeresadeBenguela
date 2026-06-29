@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciar Notícias - Admin Instituto Teresa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <script src="./js/common.js" defer></script>
+    <script src="./js/image-picker.js" defer></script>
+    <script src="./js/video-picker.js" defer></script>
+    <script src="./js/news.js" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow admin-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa" onerror="this.style.display='none'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
+                    </div>
+                    <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="board.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
+                        <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
+                        <a href="volunteers.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Sair <i class="fas fa-sign-out-alt ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div id="alert-message" class="hidden rounded-md p-4"></div>
+
+            <!-- Formulário -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 id="form-title" class="text-lg font-medium text-gray-900">Nova Notícia</h2>
+                    <button type="button" id="cancel-btn" onclick="resetForm()" class="hidden text-sm text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times mr-1"></i> Cancelar edição
+                    </button>
+                </div>
+                <form id="news-form" class="space-y-4">
+                    <input type="hidden" id="news-id">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Título *</label>
+                        <input type="text" id="news-title" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Resumo (exibido na listagem)</label>
+                        <textarea id="news-summary" rows="2" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Conteúdo completo</label>
+                        <textarea id="news-content" rows="5" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Imagem</label>
+                        <input type="text" id="news-image" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Vídeo do YouTube <span class="text-gray-400 font-normal">(opcional)</span></label>
+                        <input type="text" id="news-video" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Data de publicação</label>
+                            <input type="date" id="news-date" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="flex items-end">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" id="news-active" checked class="h-4 w-4 border-gray-300 rounded">
+                                <span class="text-sm font-medium text-gray-700">Publicada (visível no site)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white btn-brand">
+                            <i class="fas fa-save mr-2"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Notícias cadastradas</h2>
+                <div id="news-list" class="space-y-3">
+                    <p class="text-gray-500">Carregando...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

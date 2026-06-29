@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciar Discografia - Admin Instituto Teresa</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/admin.css">
+    <script src="./js/common.js" defer></script>
+    <script src="./js/discography.js" defer></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow admin-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="../assets/logo.svg" alt="Teresa" onerror="this.style.display='none'">
+                        <span class="ml-2 font-bold text-xl admin-logo-text">Admin</span>
+                    </div>
+                    <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                        <a href="board.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Diretoria</a>
+                        <a href="projects.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Projetos</a>
+                        <a href="volunteers.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Voluntários</a>
+                        <a href="news.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Notícias</a>
+                        <a href="discography.html" class="nav-brand-active inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discografia</a>
+                        <a href="settings.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Configurações</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="logout-btn" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700">Sair <i class="fas fa-sign-out-alt ml-2"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div id="alert-message" class="hidden rounded-md p-4"></div>
+
+            <!-- Formulário -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 id="form-title" class="text-lg font-medium text-gray-900">Nova Faixa</h2>
+                    <button type="button" id="cancel-btn" onclick="resetForm()" class="hidden text-sm text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times mr-1"></i> Cancelar edição
+                    </button>
+                </div>
+                <form id="track-form" class="space-y-4">
+                    <input type="hidden" id="track-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Título *</label>
+                            <input type="text" id="track-title" required class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Artista</label>
+                            <input type="text" id="track-artist" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Código (ID interno)</label>
+                            <input type="text" id="track-code" placeholder="track-1" class="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Arquivo de áudio *</label>
+                            <div class="mt-1 flex gap-2">
+                                <input type="text" id="track-audio" required placeholder="./assets/discografia/00 - Nome"
+                                    class="block w-full border border-gray-300 rounded-md p-2 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
+                                    oninput="updateAudioPreview()">
+                                <label for="audio-file-input"
+                                    id="audio-upload-btn"
+                                    class="shrink-0 inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">
+                                    <i class="fas fa-upload"></i> Enviar arquivo
+                                </label>
+                                <input type="file" id="audio-file-input"
+                                    accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/aac,audio/flac,.mp3,.ogg,.wav,.m4a,.aac,.flac"
+                                    class="hidden">
+                            </div>
+                            <p class="mt-1 text-xs text-gray-400" id="audio-hint">
+                                Cole um caminho existente ou clique em "Enviar arquivo" para fazer upload.
+                            </p>
+                            <audio id="audio-preview" controls class="hidden mt-2 w-full" style="height:36px;"></audio>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white btn-brand">
+                            <i class="fas fa-save mr-2"></i> Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista -->
+            <div class="bg-white shadow sm:rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Faixas cadastradas</h2>
+                <div id="tracks-list" class="space-y-2">
+                    <p class="text-gray-500">Carregando...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
