@@ -30,6 +30,8 @@ public class UploadController {
     );
 
     private static final String UPLOAD_DIR = "./uploads/";
+    // Adicionamos a URL base do seu servidor no Render
+    private static final String BASE_URL = "https://teresadebenguela-13vo.onrender.com";
 
     @PostMapping
     public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) throws IOException {
@@ -67,8 +69,10 @@ public class UploadController {
 
         String filename = UUID.randomUUID() + ext;
         Path dir = Paths.get(UPLOAD_DIR);
-        Files.createDirectories(dir);
+        Files.createDirectories(dir); // Garante que a pasta existe
         Files.write(dir.resolve(filename), file.getBytes());
-        return "/uploads/" + filename;
+        
+        // Retorna a URL absoluta apontando para o Render
+        return BASE_URL + "/uploads/" + filename;
     }
 }
