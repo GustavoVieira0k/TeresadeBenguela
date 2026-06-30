@@ -86,10 +86,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
+        // Define a origem exata do seu front-end
         corsConfig.setAllowedOrigins(List.of("https://gustavovieira0k.github.io"));
+        // Define os métodos permitidos explicitamente incluindo o OPTIONS
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfig.setAllowedHeaders(List.of("*"));
+        // Define os cabeçalhos permitidos explicitamente para não dar brecha ao preflight
+        corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With"));
+        // Expõe os cabeçalhos para o front-end conseguir ler a resposta
+        corsConfig.setExposedHeaders(List.of("Authorization"));
+        // Permite envio de credenciais/tokens
         corsConfig.setAllowCredentials(true);
+        // Define o tempo máximo que o navegador guarda essa resposta de teste (evita requisições OPTIONS repetidas)
+        corsConfig.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);

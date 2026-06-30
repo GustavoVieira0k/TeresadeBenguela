@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('https://api-teresa.onrender.com/api/auth/login', {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ 
