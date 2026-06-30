@@ -14,7 +14,7 @@ class DiscographyCarousel {
     if (this.isInitialized) return;
 
     try {
-        const res = await fetch('/api/discography');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/discography');
         discographyTracks = await res.json();
         this.tracks = discographyTracks;
     } catch(e) {

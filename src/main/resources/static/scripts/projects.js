@@ -42,7 +42,7 @@ async function loadProjects() {
     `;
 
     try {
-      const response = await fetch('/api/projects');
+      const response = await fetch('https://teresadebenguela-13vo.onrender.com/api/projects');
       const projects = await response.json();
       window.ProjectsManager.projects = projects;
 
