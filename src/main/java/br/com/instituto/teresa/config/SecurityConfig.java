@@ -1,10 +1,11 @@
 package br.com.instituto.teresa.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,10 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,46 +33,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(Customizer.withDefaults()) // Ativa o Bean de CORS global antes dos filtros de rota
+                // Desativamos o CORS interno do Security para o Filtro Global (abaixo) assumir o controle total
+                .cors(AbstractHttpConfigurer::disable) 
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Permite todas as requisições de teste OPTIONS do navegador
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/auth/login", "/api/volunteers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        
                         // Projetos
                         .requestMatchers(HttpMethod.POST, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/projects/**").authenticated()
-                        
                         // Diretoria
                         .requestMatchers(HttpMethod.POST, "/api/board/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
-                        
                         // Candidaturas de voluntários
                         .requestMatchers(HttpMethod.DELETE, "/api/volunteers/**").authenticated()
-                        
                         // Página de voluntários
                         .requestMatchers(HttpMethod.PUT, "/api/volunteer/page/**").authenticated()
-                        
                         // Discografia
                         .requestMatchers(HttpMethod.POST, "/api/discography/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/discography/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/discography/**").authenticated()
-                        
                         // Notícias
                         .requestMatchers(HttpMethod.POST, "/api/news/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/news/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/news/**").authenticated()
-                        
                         // Configurações do site
                         .requestMatchers(HttpMethod.PUT, "/api/site-settings/**").authenticated()
-                        
                         // Arquivos estáticos
                         .requestMatchers("/", "/index.html", "/projetos.html", "/voluntario.html", "/noticias.html", "/styles/**", "/scripts/**", "/assets/**", "/uploads/**", "/context/**", "/admin/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated()
@@ -83,25 +73,24 @@ public class SecurityConfig {
                 .build();
     }
 
+    // --- A SOLUÇÃO DEFINITIVA ANTI-CORS ---
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        // Define a origem exata do seu front-end
-        corsConfig.setAllowedOrigins(List.of("https://gustavovieira0k.github.io"));
-        // Define os métodos permitidos explicitamente incluindo o OPTIONS
-        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Define os cabeçalhos permitidos explicitamente para não dar brecha ao preflight
-        corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With"));
-        // Expõe os cabeçalhos para o front-end conseguir ler a resposta
-        corsConfig.setExposedHeaders(List.of("Authorization"));
-        // Permite envio de credenciais/tokens
-        corsConfig.setAllowCredentials(true);
-        // Define o tempo máximo que o navegador guarda essa resposta de teste (evita requisições OPTIONS repetidas)
-        corsConfig.setMaxAge(3600L);
-        
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
+        CorsConfiguration config = new CorsConfiguration();
+        
+        config.setAllowCredentials(true);
+        // O OriginPattern "*" com allowCredentials resolve problemas com https, http, www, etc.
+        config.addAllowedOriginPattern("*"); 
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        
+        source.registerCorsConfiguration("/**", config);
+        
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+        // Ordem HIGHEST_PRECEDENCE: O CORS será a PRIMEIRA coisa executada na API inteira
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); 
+        return bean;
     }
 
     @Bean
