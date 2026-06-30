@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -31,45 +34,46 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults()) // Ativa o Bean de CORS global antes dos filtros de rota
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> {
-                    var corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("https://gustavovieira0k.github.io"));
-                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    corsConfig.setAllowedHeaders(List.of("*"));
-                    corsConfig.setAllowCredentials(true);
-                    return corsConfig;
-                }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // LIBERAÇÃO DO PREFLIGHT: Permite que o navegador valide o CORS via OPTIONS antes do POST
+                        // Permite todas as requisições de teste OPTIONS do navegador
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/auth/login", "/api/volunteers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        
                         // Projetos
                         .requestMatchers(HttpMethod.POST, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/projects/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/projects/**").authenticated()
+                        
                         // Diretoria
                         .requestMatchers(HttpMethod.POST, "/api/board/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+                        
                         // Candidaturas de voluntários
                         .requestMatchers(HttpMethod.DELETE, "/api/volunteers/**").authenticated()
+                        
                         // Página de voluntários
                         .requestMatchers(HttpMethod.PUT, "/api/volunteer/page/**").authenticated()
+                        
                         // Discografia
                         .requestMatchers(HttpMethod.POST, "/api/discography/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/discography/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/discography/**").authenticated()
+                        
                         // Notícias
                         .requestMatchers(HttpMethod.POST, "/api/news/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/news/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/news/**").authenticated()
+                        
                         // Configurações do site
                         .requestMatchers(HttpMethod.PUT, "/api/site-settings/**").authenticated()
+                        
                         // Arquivos estáticos
                         .requestMatchers("/", "/index.html", "/projetos.html", "/voluntario.html", "/noticias.html", "/styles/**", "/scripts/**", "/assets/**", "/uploads/**", "/context/**", "/admin/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated()
@@ -77,6 +81,19 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(List.of("https://gustavovieira0k.github.io"));
+        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedHeaders(List.of("*"));
+        corsConfig.setAllowCredentials(true);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
     }
 
     @Bean
