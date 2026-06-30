@@ -8,7 +8,8 @@ async function loadBoardMembers() {
     const template = document.getElementById('board-member-template');
 
     try {
-        const res = await fetch('/api/board');
+        // CORREÇÃO: URL do Render
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/board');
         const members = await res.json();
         container.innerHTML = '';
 
@@ -34,7 +35,8 @@ async function updateMember(event, form) {
     const name = form.querySelector('.member-name').value;
 
     try {
-        const res = await fetch(`/api/board/${id}`, {
+        // CORREÇÃO: URL do Render
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/board/${id}`, {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify({ role, name })
@@ -57,7 +59,8 @@ async function createMember(e) {
     if (!role || !name) return;
 
     try {
-        const res = await fetch('/api/board', {
+        // CORREÇÃO: URL do Render
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/board', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({ role, name })
@@ -77,7 +80,8 @@ async function createMember(e) {
 async function deleteMember(id, name) {
     if (!confirm(`Excluir o membro "${name}"?`)) return;
     try {
-        const res = await fetch(`/api/board/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        // CORREÇÃO: URL do Render
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/board/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
         if (res.ok) {
             showAlert('Membro excluído.', 'success');
             loadBoardMembers();
