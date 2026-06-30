@@ -15,7 +15,8 @@ async function loadNews() {
     const list = document.getElementById('news-list');
     list.innerHTML = '<p class="text-gray-500">Carregando...</p>';
     try {
-        const res = await fetch('/api/news/all', { headers: getAuthHeaders() });
+        // CORREÇÃO: URL do Render
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/news/all', { headers: getAuthHeaders() });
         newsData = await res.json();
         renderNewsList();
     } catch (e) {
@@ -99,7 +100,8 @@ async function saveNews(e) {
         active: document.getElementById('news-active').checked
     };
 
-    const url = id ? `/api/news/${id}` : '/api/news';
+    // CORREÇÃO: URL do Render
+    const url = id ? `https://teresadebenguela-13vo.onrender.com/api/news/${id}` : 'https://teresadebenguela-13vo.onrender.com/api/news';
     const method = id ? 'PUT' : 'POST';
 
     try {
@@ -120,7 +122,8 @@ async function deleteNews(id) {
     const news = newsData.find(x => x.id === id);
     if (!confirm(`Excluir "${news?.title}"?`)) return;
     try {
-        const res = await fetch(`/api/news/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        // CORREÇÃO: URL do Render
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/news/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
         if (res.ok) {
             showAlert('Notícia excluída.', 'success');
             loadNews();

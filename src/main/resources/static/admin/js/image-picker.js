@@ -179,7 +179,8 @@ window.ImagePicker = (function () {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const res = await fetch('/api/upload', {
+                // CORREÇÃO: URL absoluta apontando para a sua API no Render
+                const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/upload', {
                     method: 'POST',
                     headers,
                     body: formData
