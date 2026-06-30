@@ -1,12 +1,13 @@
 window.ImagePicker = (function () {
 
     function _buildWidget(inputEl) {
-        // Oculta o input original no lugar — não o move
-        inputEl.style.display = 'none';
+        // A MÁGICA AQUI: O input agora fica visível para você colar o link externo!
+        inputEl.placeholder = "Cole o link direto da imagem aqui (ou use o quadro abaixo)";
+        inputEl.style.display = 'block';
 
-        // Wrapper inserido logo após o input
+        // Wrapper inserido logo após o input com uma margem para separar
         const wrapper = document.createElement('div');
-        wrapper.style.cssText = 'width:100%;';
+        wrapper.style.cssText = 'width:100%; margin-top: 12px;';
         inputEl.insertAdjacentElement('afterend', wrapper);
 
         // Input de arquivo — escondido, fora do fluxo de formulário
@@ -44,7 +45,7 @@ window.ImagePicker = (function () {
         ].join('');
         emptyState.innerHTML = [
             '<i class="fas fa-image" style="font-size:2.2rem;color:#d1d5db;"></i>',
-            '<span style="font-size:.875rem;font-weight:500;">Clique para selecionar imagem</span>',
+            '<span style="font-size:.875rem;font-weight:500;">Ou clique para fazer upload local</span>',
             '<span style="font-size:.75rem;">JPG, PNG, GIF ou WEBP — até 10MB</span>'
         ].join('');
 
@@ -69,7 +70,7 @@ window.ImagePicker = (function () {
             'display:none;align-items:center;justify-content:center;',
             'gap:8px;padding:28px;background:#f9fafb;color:#6b7280;font-size:.8rem;min-height:100px;'
         ].join('');
-        brokenMsg.innerHTML = '<i class="fas fa-image-slash" style="font-size:1.5rem;color:#d1d5db;"></i><span>Imagem não encontrada (caminho inválido)</span>';
+        brokenMsg.innerHTML = '<i class="fas fa-image-slash" style="font-size:1.5rem;color:#d1d5db;"></i><span>Imagem não encontrada (link inválido)</span>';
 
         const overlay = document.createElement('div');
         overlay.style.cssText = [
@@ -80,13 +81,13 @@ window.ImagePicker = (function () {
         ].join('');
 
         const changeBtn = _btn(
-            '<i class="fas fa-sync-alt"></i> Alterar',
+            '<i class="fas fa-sync-alt"></i> Alterar Upload',
             'rgba(255,255,255,.92)', '#374151'
         );
         changeBtn.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
 
         const removeBtn = _btn(
-            '<i class="fas fa-times"></i> Remover',
+            '<i class="fas fa-times"></i> Limpar',
             'rgba(220,38,38,.88)', '#fff'
         );
         removeBtn.addEventListener('click', (e) => {
@@ -150,7 +151,9 @@ window.ImagePicker = (function () {
         }
 
         // Sincroniza quando código externo altera .value + dispatchEvent('change')
+        // E TAMBÉM quando você cola o texto manualmente (input)!
         inputEl.addEventListener('change', updateUI);
+        inputEl.addEventListener('input', updateUI);
 
         // Seta estado inicial
         updateUI();
@@ -179,7 +182,6 @@ window.ImagePicker = (function () {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                // CORREÇÃO: URL absoluta apontando para a sua API no Render
                 const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/upload', {
                     method: 'POST',
                     headers,
