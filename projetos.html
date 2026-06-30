@@ -185,7 +185,7 @@
 
     async function loadProjectsFromAPI() {
       try {
-        const response = await fetch('/api/projects');
+        const response = await fetch('https://teresadebenguela-13vo.onrender.com/api/projects');
         if (!response.ok) throw new Error('Erro ao buscar projetos');
         
         const data = await response.json();

@@ -236,7 +236,7 @@
     async function loadNews() {
       const grid = document.getElementById('news-grid');
       try {
-        const res = await fetch('/api/news');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/news');
         allNews = await res.json();
         if (!allNews.length) {
           grid.innerHTML = `<div class="col-span-full empty-state"><i class="fas fa-newspaper"></i><p class="text-lg font-medium mt-3">Nenhuma notícia publicada ainda.</p></div>`;

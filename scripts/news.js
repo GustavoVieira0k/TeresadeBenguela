@@ -64,7 +64,7 @@
       if (!container) return;
 
       try {
-        const res = await fetch('/api/news');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/news');
         if (!res.ok) throw new Error();
         allNews = await res.json();
 
