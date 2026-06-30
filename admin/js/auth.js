@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const loginInput = document.getElementById('login').value;
             const passwordInput = document.getElementById('password').value;
 
@@ -12,9 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('https://api-teresa.onrender.com/api/auth/login', {
                     method: 'POST',
                     headers: {
+                        'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ login: loginInput, password: passwordInput })
+                    body: JSON.stringify({ 
+                        login: loginInput.trim(), 
+                        password: passwordInput.trim() 
+                    })
                 });
 
                 if (response.ok) {
