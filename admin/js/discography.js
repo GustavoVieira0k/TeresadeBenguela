@@ -10,7 +10,7 @@ async function loadTracks() {
     const list = document.getElementById('tracks-list');
     list.innerHTML = '<p class="text-gray-500">Carregando...</p>';
     try {
-        const res = await fetch('/api/discography');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/discography');
         tracksData = await res.json();
         renderTracksList();
     } catch (e) {
@@ -57,7 +57,7 @@ async function handleAudioFileChange(e) {
     try {
         const form = new FormData();
         form.append('file', file);
-        const res = await fetch('/api/upload/audio', {
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/upload/audio', {
             method: 'POST',
             headers: { 'Authorization': getAuthHeaders()['Authorization'] },
             body: form
@@ -127,7 +127,7 @@ async function saveTrack(e) {
         audioFile: document.getElementById('track-audio').value
     };
 
-    const url = id ? `/api/discography/${id}` : '/api/discography';
+    const url = id ? `https://teresadebenguela-13vo.onrender.com/api/discography/${id}` : 'https://teresadebenguela-13vo.onrender.com/api/discography';
     const method = id ? 'PUT' : 'POST';
 
     try {
@@ -148,7 +148,7 @@ async function deleteTrack(id) {
     const track = tracksData.find(x => x.id === id);
     if (!confirm(`Excluir "${track?.title}"?`)) return;
     try {
-        const res = await fetch(`/api/discography/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/discography/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
         if (res.ok) {
             showAlert('Faixa excluída.', 'success');
             loadTracks();

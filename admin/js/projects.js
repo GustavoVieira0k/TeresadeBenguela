@@ -12,7 +12,7 @@ async function loadProjects() {
     const grid = document.getElementById('projects-grid');
     grid.innerHTML = '<p class="col-span-full text-gray-500">Carregando...</p>';
     try {
-        const res = await fetch('/api/projects');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/projects');
         projectsData = await res.json();
         grid.innerHTML = '';
         projectsData.forEach(project => {
@@ -153,7 +153,7 @@ async function saveProject(e) {
         details: projectOriginal ? projectOriginal.details : {}
     };
 
-    const url = id ? `/api/projects/${id}` : '/api/projects';
+    const url = id ? `https://teresadebenguela-13vo.onrender.com/api/projects/${id}` : 'https://teresadebenguela-13vo.onrender.com/api/projects';
     const method = id ? 'PUT' : 'POST';
 
     try {
@@ -174,7 +174,7 @@ async function deleteProject(id) {
     const project = projectsData.find(p => p.id === id);
     if (!confirm(`Excluir o projeto "${project?.title}"? Esta ação não pode ser desfeita.`)) return;
     try {
-        const res = await fetch(`/api/projects/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/projects/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
         if (res.ok) {
             showAlert('Projeto excluído.', 'success');
             hideEditForm();

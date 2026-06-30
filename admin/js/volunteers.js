@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadVolunteerContent() {
     try {
-        const res = await fetch('/api/volunteer/page');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/volunteer/page');
         if (!res.ok) return;
         const data = await res.json();
         document.getElementById('v-title1').value = data.title1 || '';
@@ -52,7 +52,7 @@ async function updateVolunteerContent(e) {
     };
 
     try {
-        const res = await fetch('/api/volunteer/page', {
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/volunteer/page', {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify(payload)
@@ -69,7 +69,7 @@ async function updateVolunteerContent(e) {
 
 async function loadVolunteers() {
     try {
-        const res = await fetch('/api/volunteers', { headers: getAuthHeaders() });
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/volunteers', { headers: getAuthHeaders() });
         if (!res.ok) throw new Error();
         const volunteers = await res.json();
         const container = document.getElementById('volunteers-list');
@@ -133,7 +133,7 @@ function openMsgModal(name, msg) {
 async function deleteVolunteer(id, name) {
     if (!confirm(`Excluir a candidatura de "${name}"? Esta ação não pode ser desfeita.`)) return;
     try {
-        const res = await fetch(`/api/volunteers/${id}`, {
+        const res = await fetch(`https://teresadebenguela-13vo.onrender.com/api/volunteers/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders()
         });

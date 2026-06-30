@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadSettings() {
     try {
-        const res = await fetch('/api/site-settings');
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/site-settings');
         if (!res.ok) return;
         const data = await res.json();
         FIELDS.forEach(field => {
@@ -48,7 +48,7 @@ async function saveSettings(e) {
     });
 
     try {
-        const res = await fetch('/api/site-settings', {
+        const res = await fetch('https://teresadebenguela-13vo.onrender.com/api/site-settings', {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify(payload)
